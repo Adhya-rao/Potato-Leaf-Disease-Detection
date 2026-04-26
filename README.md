@@ -38,7 +38,6 @@ potato-disease-app/
 │── cnn_model.keras
 │── requirements.txt
 │── README.md
-
 ---
 
 ## ⚙️ Setup Instructions
