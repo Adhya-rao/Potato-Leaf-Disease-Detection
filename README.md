@@ -33,12 +33,13 @@ It classifies images into:
 
 ## 📁 Project Structure
 
+
+
 potato-disease-app/
-│── app.py
-│── cnn_model.keras
-│── requirements.txt
-│── README.md
----
+- app.py
+- cnn_model.keras
+- requirements.txt
+- README.md
 
 ## ⚙️ Setup Instructions
 
