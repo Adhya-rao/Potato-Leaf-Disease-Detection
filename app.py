@@ -1,4 +1,7 @@
 # streamlit run app.py
+import os
+# Force legacy Keras behavior before importing TensorFlow
+os.environ["TF_USE_LEGACY_KERAS"] = "1"
 
 import streamlit as st
 import numpy as np
