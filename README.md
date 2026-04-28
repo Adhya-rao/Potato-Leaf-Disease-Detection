@@ -18,6 +18,9 @@ It classifies images into:
 - 📊 Trained on PlantVillage dataset
 
 ---
+## Deployed Link
+
+   https://potato-leaf-disease-detection-m9dzmzchkfqd6mn3wde5xw.streamlit.app/
 
 ## 🛠️ Tech Stack
 
