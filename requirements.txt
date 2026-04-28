@@ -1,5 +1,6 @@
 
-tensorflow==2.15.0
+tensorflow==2.17.0
+keras==3.4.1
 streamlit
-pillow
 numpy<2.0.0
+pillow
