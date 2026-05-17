@@ -5,31 +5,20 @@ from PIL import Image
 import keras
 import tensorflow as tf
 
-# ---------------- PAGE CONFIG ---------------- #
-
-st.set_page_config(
-    page_title="Potato Disease Detection",
-    layout="centered"
-)
+st.set_page_config(page_title="Potato Disease Detection", layout="centered")
 
 st.title("🥔 Potato Leaf Disease Detection")
 
-st.info(
-    "Supported Classes: Healthy, Early Blight, Late Blight"
-)
-
-# ---------------- LOAD MODEL ---------------- #
-
 @st.cache_resource
 def load_files():
-
     try:
-
+        # Load model
         model = keras.models.load_model(
             "cnn_model.keras",
             compile=False
         )
 
+        # Load class labels
         with open("class_indices.pkl", "rb") as f:
             class_indices = pickle.load(f)
 
@@ -40,59 +29,51 @@ def load_files():
         return None, None, str(e)
 
 
+# Load model and labels
 model, class_indices, error = load_files()
 
-# ---------------- ERROR HANDLING ---------------- #
-
+# Error handling
 if error:
-
     st.error(f"❌ Error loading model: {error}")
     st.stop()
 
 else:
-
     st.success("✅ Model Loaded Successfully")
 
 
-# ---------------- LABELS ---------------- #
-
+# Reverse labels
 labels = {v: k for k, v in class_indices.items()}
 
-# ---------------- FILE UPLOAD ---------------- #
 
+# Upload image
 uploaded_file = st.file_uploader(
-    "Upload ONLY Potato Leaf Image",
+    "Upload a potato leaf image",
     type=["jpg", "jpeg", "png"]
 )
 
-# ---------------- PREDICTION ---------------- #
 
+# Prediction
 if uploaded_file is not None:
 
     # Open image
     image = Image.open(uploaded_file).convert("RGB")
 
-    # Show image
+    # Display image
     st.image(
         image,
         caption="Uploaded Image",
         use_container_width=True
     )
 
-    # Resize image
+    # Preprocess image
     img = image.resize((224, 224))
 
-    # Convert image to array
-    img_array = np.array(img)
+    img_array = np.array(img) / 255.0
 
-    # Normalize
-    img_array = img_array / 255.0
-
-    # Expand dimensions
     img_array = np.expand_dims(
         img_array,
         axis=0
-    ).astype('float32')
+    ).astype("float32")
 
     # Prediction
     predictions = model.predict(
@@ -104,7 +85,7 @@ if uploaded_file is not None:
 
     label = labels[predicted_class]
 
-    # Output
+    # Result
     if "healthy" in label.lower():
 
         st.success(
@@ -121,6 +102,3 @@ if uploaded_file is not None:
     st.write(
         f"**Confidence:** {np.max(predictions):.2%}"
     )
-
-    # Debug (optional)
-    # st.write(predictions)
