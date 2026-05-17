@@ -4,7 +4,6 @@ import pickle
 from PIL import Image
 import keras
 import tensorflow as tf
-import os
 
 # Page Configuration
 st.set_page_config(
@@ -12,20 +11,14 @@ st.set_page_config(
     layout="centered"
 )
 
+# Title
 st.title("🥔 Potato Leaf Disease Detection")
-
-# Debug: Show files available
-st.write("Available Files:", os.listdir())
 
 # Load Model and Labels
 @st.cache_resource
 def load_files():
     try:
-        # Check if model file exists
-        if not os.path.exists("cnn_model.keras"):
-            return None, None, "cnn_model.keras file not found"
-
-        # Load CNN model
+        # Load trained CNN model
         model = keras.models.load_model(
             "cnn_model.keras",
             compile=False
@@ -51,22 +44,22 @@ if error:
 else:
     st.success("✅ Model Loaded Successfully")
 
-# Reverse mapping
+# Reverse class mapping
 labels = {v: k for k, v in class_indices.items()}
 
-# Upload image
+# File uploader
 uploaded_file = st.file_uploader(
     "Upload a potato leaf image",
     type=["jpg", "jpeg", "png"]
 )
 
-# Prediction
+# Prediction block
 if uploaded_file is not None:
 
     # Open image
     image = Image.open(uploaded_file).convert("RGB")
 
-    # Display image
+    # Display uploaded image
     st.image(
         image,
         caption="Uploaded Image",
@@ -89,7 +82,7 @@ if uploaded_file is not None:
         verbose=0
     )
 
-    # Confidence
+    # Confidence score
     confidence = np.max(predictions)
 
     # Predicted class
@@ -97,30 +90,20 @@ if uploaded_file is not None:
 
     label = labels[predicted_class]
 
-    # Validation
-    if confidence < 0.70:
+    # Display Result
+    if "healthy" in label.lower():
 
-        st.warning(
-            "⚠️ Please upload a valid potato leaf image"
+        st.success(
+            f"🌿 Prediction: {label}"
         )
 
     else:
 
-        # Healthy
-        if "healthy" in label.lower():
-
-            st.success(
-                f"🌿 Prediction: {label}"
-            )
-
-        # Diseased
-        else:
-
-            st.error(
-                f"⚠️ Prediction: {label}"
-            )
-
-        # Confidence score
-        st.write(
-            f"**Confidence:** {confidence:.2%}"
+        st.error(
+            f"⚠️ Prediction: {label}"
         )
+
+    # Confidence display
+    st.write(
+        f"**Confidence:** {confidence:.2%}"
+    )
