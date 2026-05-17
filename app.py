@@ -97,7 +97,7 @@ if uploaded_file is not None:
     label = labels[predicted_class]
 
     # Validation
-    if confidence < 0.70:
+    if confidence < 0.95:
 
         st.warning(
             "⚠️ Please upload a valid potato leaf image"
