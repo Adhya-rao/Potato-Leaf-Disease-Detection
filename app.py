@@ -1,4 +1,4 @@
-```python
+
 import streamlit as st
 import numpy as np
 import pickle
@@ -116,4 +116,4 @@ if uploaded_file is not None:
         st.write(
             f"**Confidence:** {confidence:.2%}"
         )
-```
+
