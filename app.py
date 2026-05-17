@@ -1,10 +1,10 @@
-
 import streamlit as st
 import numpy as np
 import pickle
 from PIL import Image
 import keras
 import tensorflow as tf
+import os
 
 # Page Configuration
 st.set_page_config(
@@ -14,17 +14,24 @@ st.set_page_config(
 
 st.title("🥔 Potato Leaf Disease Detection")
 
-# Load Model and Class Labels
+# Debug: Show files available
+st.write("Available Files:", os.listdir())
+
+# Load Model and Labels
 @st.cache_resource
 def load_files():
     try:
-        # Load trained CNN model
+        # Check if model file exists
+        if not os.path.exists("cnn_model.keras"):
+            return None, None, "cnn_model.keras file not found"
+
+        # Load CNN model
         model = keras.models.load_model(
             "cnn_model.keras",
             compile=False
         )
 
-        # Load class indices
+        # Load class labels
         with open("class_indices.pkl", "rb") as f:
             class_indices = pickle.load(f)
 
@@ -44,22 +51,22 @@ if error:
 else:
     st.success("✅ Model Loaded Successfully")
 
-# Reverse class mapping
+# Reverse mapping
 labels = {v: k for k, v in class_indices.items()}
 
-# File uploader
+# Upload image
 uploaded_file = st.file_uploader(
     "Upload a potato leaf image",
     type=["jpg", "jpeg", "png"]
 )
 
-# Prediction block
+# Prediction
 if uploaded_file is not None:
 
     # Open image
     image = Image.open(uploaded_file).convert("RGB")
 
-    # Display uploaded image
+    # Display image
     st.image(
         image,
         caption="Uploaded Image",
@@ -82,14 +89,15 @@ if uploaded_file is not None:
         verbose=0
     )
 
-    # Get confidence and predicted class
+    # Confidence
     confidence = np.max(predictions)
 
+    # Predicted class
     predicted_class = np.argmax(predictions)
 
     label = labels[predicted_class]
 
-    # Confidence validation
+    # Validation
     if confidence < 0.70:
 
         st.warning(
@@ -98,22 +106,21 @@ if uploaded_file is not None:
 
     else:
 
-        # Healthy leaf
+        # Healthy
         if "healthy" in label.lower():
 
             st.success(
                 f"🌿 Prediction: {label}"
             )
 
-        # Diseased leaf
+        # Diseased
         else:
 
             st.error(
                 f"⚠️ Prediction: {label}"
             )
 
-        # Show confidence score
+        # Confidence score
         st.write(
             f"**Confidence:** {confidence:.2%}"
         )
-
