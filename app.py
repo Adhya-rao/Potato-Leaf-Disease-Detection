@@ -14,7 +14,7 @@ st.set_page_config(
 
 st.title("🥔 Potato Leaf Disease Detection")
 
-# Load Model & Classes
+# Load Model & Classesm
 @st.cache_resource
 def load_files():
     try:
