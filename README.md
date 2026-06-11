@@ -103,18 +103,9 @@ Potato-Leaf-Disease-Detection/
 ├── README.md
 │
 └── assets/
-```
 
----
 
-## ⚙️ Installation
 
-### Clone the Repository
-
-```bash
-git clone https://github.com/your-username/potato-leaf-disease-detection.git
-cd potato-leaf-disease-detection
-```
 
 ### Install Dependencies
 
@@ -130,19 +121,7 @@ streamlit run app.py
 
 ---
 
-## 🌐 Deployment
 
-The application is deployed using **Streamlit Cloud**.
-
-### Live Demo
-
-Add your deployment link here:
-
-```text
-https://your-streamlit-app-url.streamlit.app
-```
-
----
 
 ## 🔍 Challenges Faced
 
@@ -193,17 +172,7 @@ Through this project, I gained practical experience in:
 
 ---
 
-## 👨‍💻 Author
 
-**Your Name**
-
-GitHub: https://github.com/your-username
-
----
-
-## 📄 License
-
-This project is developed for educational and learning purposes.
 
 
 # 🥔 Potato Leaf Disease Detection 🌿
